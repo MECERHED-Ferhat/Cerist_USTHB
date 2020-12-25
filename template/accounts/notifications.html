@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block page_title %}
+	<title>Notifications</title>
+{% endblock %}
+
+{% block feuilleCss %} 
+	<link rel="stylesheet" href='{% static "feuilles_css/feuille.css" %}'>
+{% endblock %}
+
+{% block main_content %}
+	<div class="class-main-content">
+		{% include "accounts/sidebar_log.html" %}
+		<main class="class-main-notif">
+			<form method="POST" action="." onsubmit="return submitDelNot();">
+			{% csrf_token %}
+			<input class="class-notif-hid" type="hidden" name="delnot">
+			<table class="class-notif-table">
+				<colgroup>
+	                <col id="class-notif-column-check" span="1">
+	                <col id="class-notif-column-text" span="1">
+	                <col id="class-notif-column-date" span="1">
+            	</colgroup>
+
+				<thead class="class-notif-head">
+					<th class="class-notif-col-all"><span>All</span></th>
+
+					<th class="class-notif-col-del">
+						<button type="button">Delete selected notifications</button>
+					</th>
+				</thead>
+
+				<tbody class="class-notif-body">
+					{% for notif in notifications %}
+					{% if notif.seen %}
+					<tr data-id="{{ notif.id }}" class="class-notif-row">
+					{% else %}
+					<tr data-id="{{ notif.id }}" class="class-notif-row class-notif-row-notseen">
+					{% endif %}
+						<td class="class-notif-check">
+							<input type="checkbox">
+						</td>
+						<td class="class-notif-text">
+							{% if notif.notif_type == 0 %}
+
+							<a href="{% url 'account:profile' notif.source.id notif.source.user.last_name notif.source.user.first_name %}">
+								{{ notif.source.user.last_name }} {{ notif.source.user.first_name }}
+							</a>
+							 identified you in his article 
+							<a href="{% url 'article:read' notif.topic.id %}">
+								{{ notif.topic.title }}
+							</a>
+
+							{% elif notif.notif_type == 1 %}
+
+							<a href="{% url 'account:profile' notif.source.id notif.source.user.last_name notif.source.user.first_name %}">
+								{{ notif.source.user.last_name }} {{ notif.source.user.first_name }}
+							</a>
+							 published a new article
+							<a href="{% url 'article:read' notif.topic.id %}">
+								{{ notif.topic.title }}
+							</a>
+
+							{% endif %}
+						</td>
+						<td class="class-notif-date">
+							{{ notif.sending_date|date:"d/m/Y" }}
+						</td>
+					</tr>
+					{% empty %}
+					<tr class="class-notif-empty">
+						<td colspan="3">No notifications</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			</form>
+		</main>
+		<script src="{% static 'scripts_js/notifications.js' %}"></script>
+	</div>
+{% endblock %}

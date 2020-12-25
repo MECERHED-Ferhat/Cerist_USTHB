@@ -1,0 +1,170 @@
+{% extends "index.html" %}
+{% load static %}
+
+	{% block page_title %}
+	<title>Search</title>
+	{% endblock %}
+
+	{% block main_content %}
+		<main class="class-main-search">
+			<div class="class-searchresult-container">
+				<div class="class-filter">
+					<span class="class-filter-bar"><hr class="class-filter-hr"></span>
+					<button class="class-filter-btn class-blue-btn">
+						<span>Filter</span>
+						<i class="class-filter-btn-icon fas fa-angle-down"></i>
+					</button>
+				</div>
+
+				<form class="class-filter-content" action="{% url 'home:search' 1 %}" method="GET" style="display: none;" onsubmit="return validateFilterSearch();">
+					<div class="class-filter-textfields">
+						<div class="class-filter-title">
+							<label class="class-filter-label-title" for="class-filter-input-title">Title</label>
+							<input name="filter-title" id="class-filter-input-title" class="class-textfield" type="text">
+						</div>
+						<div class="class-filter-author">	
+							<label class="class-filter-label-author" for="class-filter-input-author">Author</label>
+							<input name="filter-author" id="class-filter-input-author" class="class-textfield" type="text">
+						</div>
+						<div class="class-filter-doctype">
+							<label class="class-filter-label-doctype" for="class-filter-input-doctype">Document Type</label>
+							<select name="filter-doctype" id="class-filter-input-doctype">
+								<option value="4">All</option>
+								<option value="1">Conference Article</option>
+								<option value="2">Review or Newspaper Article</option>
+								<option value="3">Report Article</option>
+								<option value="0">Other Related Productions</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="class-filter-date">
+						<div class="class-filter-date-from">
+							<div class="class-filter-drop-from">
+								<label class="class-filter-from-label" for="class-filter-select-from-day">From Date</label>
+								<i class="class-filter-icon-from fas fa-angle-down fa-fw"></i>
+							</div>
+							
+							<hr class="class-filter-from-hr">
+
+							<div class="class-filter-date-from-container">
+								<div class="class-filter-select-from" style="display: none;">
+									<select name="filter-from-none" id="class-filter-select-from-day">
+										{% for day in days %}
+											<option>{{ day }}</option>
+										{% endfor %}
+									</select>
+									<select name="filter-from-none" id="class-filter-select-from-month">
+										{% for month in months %}
+										<option>{{ month }}</option>
+										{% endfor %}
+									</select>
+									<select name="filter-from-none" id="class-filter-select-from-year">
+										{% for year in years %}
+										<option>{{ year }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="class-filter-date-to">
+							<div class="class-filter-drop-to">
+								<label class="class-filter-to-label" for="class-filter-select-to-day">To Date</label>
+								<i class="class-filter-icon-to fas fa-angle-down fa-fw"></i>
+							</div>
+
+							<hr class="class-filter-to-hr">
+
+							<div class="class-filter-date-to-container">
+								<div class="class-filter-select-to" style="display: none;">
+									<select name="filter-to-none" id="class-filter-select-to-day">
+										{% for day in days %}
+											<option>{{ day }}</option>
+										{% endfor %}
+									</select>
+									<select name="filter-to-none" id="class-filter-select-to-month">
+										{% for month in months %}
+										<option>{{ month }}</option>
+										{% endfor %}
+									</select>
+									<select name="filter-to-none" id="class-filter-select-to-year">
+										{% for year in years %}
+										<option>{{ year }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<input class="class-filter-submit class-blue-btn" type="submit" value="Apply">
+
+				</form>
+
+				<table class="class-table">
+					<colgroup>
+						<col id="class-column-title" span="1">
+						<col id="class-column-author" span="1">
+						<col id="class-column-type" span="1">
+						<col id="class-column-date" span="1">
+					</colgroup>
+
+					<thead class="class-table-header class-table-searchArt-header">
+						<th class="class-header-title unselectable">Title  <i class="fas"></i></th>
+						<th class="class-header-author unselectable">Postmaster  <i class="fas"></i></th>
+						<th class="class-header-type unselectable">Type  <i class="fas"></i></th>
+						<th class="class-header-date unselectable">Release Date  <i class="fas"></i></th>
+					</thead>
+
+					<tbody class="class-table-body class-table-searchArt-body">
+						{% for row in rows %}
+						<tr class="class-body-row" data-href="{% url 'article:read' row.id %}">
+							<td class="class-body-title"><a href="{% url 'article:read' row.id %}">{{ row.title }}</a></td>
+							<td class="class-body-author">{{ row.postmaster.user.last_name }} {{ row.postmaster.user.first_name }}</td>
+							<td class="class-body-type" data-sort='{{ row.doctype }}'><span class="class-type class-type-{{ row.doctype }}"></span></td>
+							<td class="class-body-date">{{ row.date_creation|date:"d/m/Y" }}</td>
+						</tr>
+						{% empty %}
+						<tr class="class-body-empty">
+							<td class="class-row-empty" colspan="4">No result found</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+				<div class="class-search-pagenav">
+					<div class="class-pagenav-container">
+						{% if index > 1 %}
+						<a class="class-pagenav-btn" href="{% url 'home:search' 1 %}"><i class="fas fa-fast-backward"></i></a>
+						<a class="class-pagenav-btn" href="{% url 'home:search' index|add:'-1' %}"><i class="fas fa-step-backward"></i></a>
+						{% else %}
+						<a class="class-pagenav-btn class-pagenav-disabled"><i class="fas fa-fast-backward"></i></a>
+						<a class="class-pagenav-btn class-pagenav-disabled"><i class="fas fa-step-backward"></i></a>
+						{% endif %}
+
+						<div class="class-pagenav-list">
+							{% for page in pages %}
+								{% if index == page %}
+									<a class="class-pagenav-selected" href="{% url 'home:search' page %}">{{ page }}</a>
+								{% else %}
+									<a href="{% url 'home:search' page %}">{{ page }}</a>
+								{% endif %}
+							{% endfor %}
+						</div>
+						{% if index < last_index %}
+						<a class="class-pagenav-btn" href="{% url 'home:search' index|add:'1' %}"><i class="fas fa-step-forward"></i></a>
+						<a class="class-pagenav-btn" href="{% url 'home:search' last_index %}"><i class="fas fa-fast-forward"></i></a>
+						{% else %}
+						<a class="class-pagenav-btn class-pagenav-disabled"><i class="fas fa-step-forward"></i></a>
+						<a class="class-pagenav-btn class-pagenav-disabled"><i class="fas fa-fast-forward"></i></a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</main>
+		<script src='{% static "scripts_js/search_article.js" %}'></script>
+	{% endblock %}
+
+
+	

@@ -1,0 +1,181 @@
+{% extends "index.html" %}
+{% load static %}
+{% load timestamp %}
+	
+	{% block other_meta %}
+	<meta name="description" content="{{ art.summary }}">
+	{% endblock %}
+
+	{% block page_title %}
+		<title>{{ art.title }}</title>
+	{% endblock %}
+
+	{% block main_content %}
+		<main class="class-main-read">
+			<div class="class-read-container">
+				<div class="class-read-header {{ color }}">
+					<h2 class="class-read-header-title">{{ art.title }}</h2>
+					<div class="class-read-header-author">
+						{% for author in authors_read %}
+							{% if author.user_ref is not None %}
+							<div class="class-read-author-ancre">
+								<a class="class-read-author-container" href="/{{ author.user_ref.id }}+{{ author.user_ref.user.last_name }}+{{ author.user_ref.user.first_name }}">
+									<div class="class-read-author-img">
+										{% if not author.user_ref.profile_pic %}
+										<img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+										{% else %}
+										<img src="{{ author.user_ref.profile_pic.url }}?{% current_time %}" draggable="false">
+										{% endif %}
+									</div>
+									{{ author.author_name }}
+								</a>
+							</div>
+							{% else %}
+							<span class="class-read-author-container" style="cursor: default;">
+								<div class="class-read-author-img">
+									<img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+								</div>
+								{{ author.author_name }}
+							</span>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+
+				{% if art.doctype == 1 and art.conference is not None  or  art.doctype == 2 and art.reviewnews is not None  or  art.doctype == 3 and art.report is not None %}
+				<div class="class-read-info">
+
+					{% if art.doctype == 1 %}
+
+						<div class="class-info-conf-name">
+							<span>Conference name :</span>
+							<span>{{ art.conference.name_conference }}</span>
+						</div>
+						<div class="class-info-conf-editor">
+							<span>Editor :</span>
+							<span>{{ art.conference.editor_conference }}</span>
+						</div>
+						<div class="class-info-conf-date">
+							<span>Conference date :</span>
+							<span>{{ art.conference.date_conference|date:"d/m/Y" }}</span>
+						</div>
+						<div class="class-info-conf-loc">
+							<span>Conference location :</span>
+							<span>{{ art.conference.location_conference }}</span>
+						</div>
+						<div class="class-info-conf-audience">
+							<span>Audience :</span>
+							{% if art.conference.audience_conference == 0 %}
+								<span>National</span>
+							{% else %}
+								<span>International</span>
+							{% endif %}
+						</div>
+						<div class="class-info-conf-read">
+							<span>Reading committee :</span>
+							{% if art.conference.reading_committee_conference == 0 %}
+								<span>No</span>
+							{% else %}
+								<span>Yes</span>
+							{% endif %}
+						</div>
+						<div class="class-info-conf-proc">
+							<span>Proceddings :</span>
+							{% if art.conference.procedding == 0 %}
+								<span>No</span>
+							{% else %}
+								<span>Yes</span>
+							{% endif %}
+						</div>
+
+					{% elif art.doctype == 2 %}
+
+						<div class="class-info-rn-name">
+							{% if art.reviewnews.type_RN == 0 %}
+								<span>Review name :</span>
+							{% else %}
+								<span>Newspaper name :</span>
+							{% endif %}
+							<span>{{ art.reviewnews.name_RN }}</span>
+						</div>
+						<div class="class-info-rn-editor">
+							<span>Editor :</span>
+							<span>{{ art.reviewnews.editor_RN }}</span>
+						</div>
+						<div class="class-info-rn-audience">
+							<span>Audience :</span>
+							{% if art.reviewnews.audience_RN == 0 %}
+								<span>National</span>
+							{% else %}
+								<span>International</span>
+							{% endif %}
+						</div>
+						<div class="class-info-rn-read">
+							<span>Reading committee :</span>
+							{% if art.reviewnews.reading_committee_RN == 0 %}
+								<span>No</span>
+							{% else %}
+								<span>Yes</span>
+							{% endif %}
+						</div>
+						{% if art.reviewnews.pages is not None %}
+						<div class="class-info-rn-pages">
+							<span>Pages :</span>
+							<span>{{ art.reviewnews.pages }}</span>
+						</div>
+						{% endif %}
+
+					{% else %}
+
+						<div class="class-info-report-type">
+							<span>Report type :</span>
+							
+							{% if art.report.type_RP == 0 %}
+								<span>Research report</span>
+							{% elif art.report.type_RP == 1 %}
+								<span>Internal report</span>
+							{% else %}
+								<span>Technical report</span>
+							{% endif %}
+						</div>
+						<div class="class-info-report-num">
+							<span>Report number :</span>
+							<span>{{ art.report.num_report }}</span>
+						</div>
+					{% endif %}
+				</div>
+				{% endif %}
+
+				<div class="class-read-summary">
+					<label class="class-read-summary-h2" for="class-read-summary-text">Summary:</label>
+					<textarea name="textarea-summary" id="class-read-summary-text" readonly="readonly">{{ art.summary }}</textarea>
+				</div>
+
+				<div class="class-read-postmaster">
+					<span class="class-read-postmaster-span">Published by :</span>
+					<a class="class-read-postmaster-container" href="/{{ art.postmaster.id }}+{{ art.postmaster.user.last_name }}+{{ art.postmaster.user.first_name }}">
+						<div class="class-read-author-img">
+							{% if not art.postmaster.profile_pic %}
+							<img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+							{% else %}
+							<img src="{{ art.postmaster.profile_pic.url }}?{% current_time %}" draggable="false">
+							{% endif %}
+						</div>
+						{{ art.postmaster.user.last_name }} {{ art.postmaster.user.first_name }}
+					</a>
+				</div>
+
+				{% if art_tags %}
+					<div class="class-read-tags">
+						<span class="class-read-tags-title">Tags :</span>
+						{% for tag in art_tags %}
+							<span class="class-read-tags-entity">{{ tag.tag_name }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				<a class="class-read-btn class-blue-btn" href="{% url 'article:download' art.document %}">Download</a>
+			</div>
+		</main>
+
+	{% endblock %}

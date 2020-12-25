@@ -1,0 +1,19 @@
+
+/*  font-family: Roboto  */
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto/Roboto-Regular.ttf');
+}
+
+/*  font-family: Poppins */
+@font-face {
+    font-family: Poppins;
+    src: url('../fonts/Poppins/Poppins-Regular.ttf');
+}
+
+/*  font-family: Domine  */
+@font-face {
+    font-family: Domine;
+    src: url('../fonts/Domine/Domine-Regular.ttf');
+}
+

@@ -1,0 +1,239 @@
+{% extends "accounts/basic_information.html" %}
+{% load static %}
+{% load timestamp %}
+
+{% block other_meta %}
+	<meta name="description" content="{{profile.user.last_name}} {{profile.user.first_name}} social media and published articles">
+{% endblock %}
+
+{% block page_title %}
+	<title>{{profile.user.last_name}} {{profile.user.first_name}}</title>
+{% endblock %}
+
+{% block content %}
+
+<aside class="account-info" data-aos="fade-right">
+    <div class="class-info-container">
+        <div class="class-name-photo-container">
+            <div class="profile-photo-container">
+                {% if not profile.profile_pic %}
+                <img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+                {% else %}
+                <img src="{{profile.profile_pic.url}}?{% current_time %}" draggable="false">
+                {% endif %}
+            </div>    
+            <div class="user-full-name">
+                <h3>{{profile.user.last_name}} {{profile.user.first_name}}</h3>
+            </div>
+        </div>
+        <div class="media-links">
+                {% if profile.google_scholar is not None %}
+                    <a href="{{profile.google_scholar}}" target="_blank" id="google-scholar">
+                        <i class="fab fa-google fa-fw"></i>
+                        <span>Scholar</span>
+                    </a> 
+                {% else %}
+                    <a id="inactive">
+                        <i class="fab fa-google fa-fw"></i>
+                        <span>Scholar</span>
+                    </a> 
+                {% endif %}
+                
+
+                {% if profile.github is not None %}
+                    <a href="{{profile.github}}" target="_blank" id="github">
+                        <i class="fab fa-github-alt fa-fw"></i>
+                        <span>Github </span>
+                    </a>  
+                {% else %}
+                    <a id="inactive">
+                        <i class="fab fa-github-alt fa-fw"></i>
+                        <span>Github </span>
+                    </a>  
+                {% endif %}
+
+                {% if profile.linkedin is not None %}
+                    <a href="{{profile.linkedin}}" target="_blank"  id="linkedin">
+                        <i class="fab fa-linkedin-in fa-fw"></i>
+                        <span>Linkedin</span>
+                    </a> 
+                {% else %}
+                    <a  id="inactive">
+                        <i class="fab fa-linkedin-in fa-fw"></i>
+                        <span>Linkedin</span>
+                    </a> 
+                {% endif %}
+
+                {% if profile.website is not None %}
+                    <a href="{{profile.website}}" target="_blank" id="website">
+                        <i class="fas fa-globe fa-fw"></i>
+                        <span>Website</span>
+                    </a>  
+                {% else %}
+                    <a id="inactive">
+                        <i class="fas fa-globe fa-fw"></i>
+                        <span>Website</span>
+                    </a>  
+                {% endif %}
+        </div>
+    </div>
+
+    {% if owner is False %}
+    <form action="." method="POST">
+        {% csrf_token %}
+
+        {% if following %}
+            <button class="class-follow-btn class-follow-fw">
+                <i class="class-follow-fw-icon fas fa-check"></i>
+                <span class="class-follow-fw-text">Following</span>
+            </button>
+        {% else %}
+            <button class="class-follow-btn class-follow-nfw">Follow</button>
+        {% endif %}
+    </form>
+    {% else %}
+    <button class="class-follow-btn class-followers-btn">Followers</button>
+    {% endif %}
+</aside>
+
+<main class="class-main-accArt class-main-search">
+    
+    <hr class="class-accinfo-hr">
+
+    <div class="class-accArt-container">
+        <div class="class-accArt-searchbar-container">
+            <input class="class-accArt-searchbar" type="text" placeholder="Search an article...">
+        </div>
+    <div class="class-accArt-table-container">
+        <table class="class-table class-table-accArt">
+            <colgroup>
+                <col id="class-accArt-column-title" span="1">
+                <col id="class-accArt-column-type" span="1">
+                <col id="class-accArt-column-date" span="1">
+            </colgroup>
+                            
+            <thead class="class-table-header class-table-accArt-header">
+                <th class="class-header-title unselectable">Title  <i class="fas"></i></th>
+                <th class="class-header-type unselectable">Type  <i class="fas"></i></th>
+                <th class="class-header-date unselectable">Release Date  <i class="fas"></i></th>
+            </thead>
+
+            <tbody class="class-table-body class-table-accArt-body">
+                {% for row in rows %}
+                <tr class="class-body-row class-body-accArt-row" data-id="{{ row.id }}" data-href="{% url 'article:read' row.id %}">
+                    <td class="class-body-title">{{ row.title }}</td>
+                    <td class="class-body-type" data-sort="{{ row.doctype }}"><span class="class-type class-type-{{ row.doctype }}"></span></td>
+                    <td class="class-body-date">{{ row.date_creation|date:"d/m/Y" }}</td>
+                    {% if owner %}
+                    <td class="class-body-trash">
+                        <button data-href="{% url 'article:editArticle' row.id %}" class="class-edit-btn">
+                            <i class="fas fa-edit fa-fw"></i>
+                        </button>
+                        <button class="class-trash-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                {% if rows|length_is:"0" %}
+                <tr class="class-body-empty">
+                {% else %}
+                <tr class="class-body-empty class-off">
+                {% endif %}
+                    <td class="class-row-empty" colspan="4">No articles</td>
+                </tr>
+            </tbody>
+            </table>
+            {% if owner %}
+            <div class="class-popup class-delete-popup class-off">
+                <i class="class-close-times class-delete-times fas fa-times"></i>
+
+                <form class="class-delete-form" action="." method="POST">
+                    {% csrf_token %}
+
+                    <input id="delart" type="hidden" name="delart" value="">
+                        
+                    <h1>Delete Article</h1>
+                    <p>Are you sure you want to delete this article?<br>
+                    <b>irreversible</b> action</p>
+
+                    <div class="class-delete-btn">
+                        <button type="button" class="class-delete-cancel">Cancel</button>
+                        <button type="submit" class="class-delete-confirm">Confirm</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="class-popup class-follow-popup class-off">
+                <i class="class-close-times class-follow-times fas fa-times"></i>
+
+                <form class="class-follow-form" action="." method="POST" onsubmit="return submitDelFw();">
+                    {% csrf_token %}
+
+                    <div class="class-follow-tab">
+                        <div class="class-follow-tab-fwing">
+                            Following
+                            <hr>
+                        </div>
+                        <div class="class-follow-tab-fwer">
+                            Follower
+                            <hr>
+                        </div>
+                    </div>
+                    
+                    <div class="class-follow-container">
+                        <div class="class-follow-fwing">
+                            {% for fwing in follow %}
+                            <div class="class-follow-fwing-row" data-fwid="{{ fwing.id }}">
+                                <a class="class-follow-fwing-row-acc" href="/{{ fwing.id }}+{{ fwing.user.last_name }}+{{ fwing.user.first_name }}">
+                                    <div class="class-follow-fwing-row-pic">
+                                        {% if not fwing.profile_pic %}
+                                        <img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+                                        {% else %}
+                                        <img src="{{ fwing.profile_pic.url }}?{% current_time %}" draggable="false">
+                                        {% endif %}
+                                    </div>
+                                    <span>{{ fwing.user.last_name }} {{ fwing.user.first_name }}</span>
+                                </a>
+                                <i class="class-follow-fwing-row-times fas fa-times"></i>
+                            </div>
+                            {% empty %}
+                            <div class="class-follow-empty">You follow no account</div>
+                            {% endfor %}
+                        </div>
+                        <div class="class-follow-fwer">
+                            {% for fwer in follower %}
+                            <div class="class-follow-fwer-row">
+                                <a class="class-follow-fwer-row-acc" href="/{{ fwer.id }}+{{ fwer.user.last_name }}+{{ fwer.user.first_name }}">
+                                    <div class="class-follow-fwer-row-pic">
+                                        {% if not fwer.profile_pic %}
+                                        <img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+                                        {% else %}
+                                        <img src="{{ fwer.profile_pic.url }}?{% current_time %}" draggable="false">
+                                        {% endif %}
+                                    </div>
+                                    <span>{{ fwer.user.last_name }} {{ fwer.user.first_name }}</span>
+                                </a>
+                            </div>
+                            {% empty %}
+                            <div class="class-follow-empty">You have no followers</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <input id="delfw" type="hidden" name="delfw">
+
+                    <div class="class-follow-btn-container">
+                        <button type="button" class="class-follow-cancel">Cancel</button>
+                        <button type="submit" class="class-follow-confirm">Unfollow</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    <script src="{% static 'scripts_js/account_article.js' %}"></script>
+</main>
+
+{% endblock %}

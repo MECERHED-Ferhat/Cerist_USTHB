@@ -1,0 +1,367 @@
+{% extends "index.html" %}
+{% load static %}
+{% load timestamp %}
+
+	{% block page_title %}
+	<title>Add Article</title>
+	{% endblock %}
+
+	{% block feuilleCss %}
+		<link rel="stylesheet" href='{% static "feuilles_css/feuille.css" %}'>
+	{% endblock %}
+
+	{% block main_content %}
+		<div class="class-main-content">
+			{% include "accounts/sidebar_log.html" %}
+			<main class="class-main-addarticle">
+				<form class="class-article-form" method="POST" enctype="multipart/form-data" onsubmit="makeTags(); makeAuthor(); makeDate(); makePages();">
+					{% csrf_token %}
+
+					{% if form.document.errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-upload">
+						<div class="class-droparea-container">
+							{{ form.document }}
+							<i class="class-droparea-icon fas fa-file-upload"></i>
+							<span class="class-droparea-text">Drag File Here</span>
+						</div>
+						<div class="class-upload-container">
+							<div class="class-upload-result class-off">
+								<span class="class-upload-result-name"></span>
+								<span class="class-upload-result-size"></span>
+							</div>
+							<label class="class-upload-btn class-blue-btn" for="class-upload-input">Select .PDF</label>
+						</div>
+					</div>
+					{% if form.document.errors %}
+						{{ form.document.errors }}
+					{% endif %}
+
+
+					{% if form.title.errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-title">
+						<label class="class-title-label" for="class-title-input">Title</label>
+						{{ form.title }}
+					</div>
+					{% if form.title.errors %}
+						{{ form.title.errors }}
+					{% endif %}
+
+
+					{% if form_author_errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-bbtab class-form-author">
+						<label class="class-bbtab-label class-author-label" for="class-author-input">Authors</label>
+						<span class="class-bbtab-error class-author-error" style="display: none;"></span>
+						<div class="class-bbtab-container class-author-container class-textfield">
+							<div class="class-bbtab-input class-author-input">
+								<input class="class-bbtab-input-field" autocomplete="off" id="class-author-input-field" type="text">
+								<i class="class-bbtab-input-icon class-author-input-icon fas fa-plus"></i>
+							</div>
+							<div class="class-bbtab-bubbles class-author-bubbles">
+							</div> 
+						</div>
+
+						<div class="class-author-list class-off">
+						{% for acc in accounts %}
+							<span class="class-author-entity" data-id="{{ acc.id }}" data-ln="{{ acc.user.last_name }}" data-fn="{{ acc.user.first_name }}">
+								<span class="class-author-entity-pic">
+									{% if not acc.profile_pic %}
+									<img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+									{% else %}
+									<img src="{{ acc.profile_pic.url }}?{% current_time %}" draggable="false">
+									{% endif %}
+								</span>
+								<span class="class-author-entity-name"></span>
+							</span>
+						{% endfor %}
+						</div>
+
+						<div class="class-bbtab-bubbles-cross class-author-bubbles-cross class-off">
+							<i class="fas fa-plus fa-fw"></i>
+						</div>
+						{{ form_author.authors }}
+					</div>
+					{% if form_author_errors %}
+						{{ form_author_errors }}
+					{% endif %}
+
+
+					{% if form.doctype.errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-doctype">
+						<label class="class-doctype-label" for="class-doctype-select">Document Type</label>
+						{{ form.doctype }}
+					</div>
+					{% if form.doctype.errors %}
+						{{ form.doctype.errors }}
+					{% endif %}
+
+
+					<div class="class-form-conference class-off">
+						{% if form_conference.name_conference.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-name">
+							<label class="class-conf-name-label" for="class-conf-name-input">Conference name</label>
+							{{ form_conference.name_conference}}
+						</div>
+						{% if form_conference.name_conference.errors %}
+							{{ form_conference.name_conference.errors }}
+						{% endif %}
+
+						
+						{% if form_conference.editor_conference.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-editor">
+							<label class="class-conf-editor-label" for="class-conf-editor-input">Editor</label>
+							{{ form_conference.editor_conference }}
+						</div>
+						{% if form_conference.editor_conference.errors %}
+							{{ form_conference.editor_conference.errors }}
+						{% endif %}
+						
+
+						<div class="class-conf-date">
+							<span class="class-conf-date-label">Conference date</span>
+							<div class="class-conf-date-container">
+								{% for x in SELECT_DAYS %}
+								<select>
+									{% for y in x %}
+									<option value="{{ y }}">{{ y }}</option>
+									{% endfor %}
+								</select>
+								{% endfor %}
+							</div>
+							{{ form_conference.date_conference }}
+						</div>
+						{% if form_conference.date_conference.errors %}
+							{{ form_conference.date_conference.errors }}
+						{% endif %}
+						
+
+						{% if form_conference.location_conference.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-loc">
+							<label class="class-conf-loc-label" for="class-conf-loc-input">Conference location</label>
+							{{ form_conference.location_conference }}
+						</div>
+						{% if form_conference.location_conference.errors %}
+							{{ form_conference.location_conference.errors }}
+						{% endif %}
+
+
+						{% if form_conference.audience_conference.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-audience">
+							<span class="class-conf-audience-label">Audience :</span>
+							<span class="class-conf-audience-container">
+								{% for radio in form_conference.audience_conference %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_conference.audience_conference.errors %}
+							{{ form_conference.audience_conference.errors }}
+						{% endif %}
+
+
+						{% if form_conference.procedding.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-proc">
+							<span class="class-conf-proc-label">Procedding :</span>
+							<span class="class-conf-proc-container">
+								{% for radio in form_conference.procedding %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_conference.procedding.errors %}
+							{{ form_conference.procedding.errors }}
+						{% endif %}
+
+
+						{% if form_conference.reading_committee_conference.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-conf-read">
+							<span class="class-conf-read-label">Reading committee :</span>
+							<span class="class-conf-read-container">
+								{% for radio in form_conference.reading_committee_conference %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_conference.reading_committee_conference.errors %}
+							{{ form_conference.reading_committee_conference.errors }}
+						{% endif %}
+					</div>
+
+
+
+					<div class="class-form-rn class-off">
+
+						{% if form_reviewNews.name_RN.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-rn-name">
+							<label class="class-rn-name-label" for="class-rn-name-input">Review or Newspaper name</label>
+							{{ form_reviewNews.name_RN }}
+						</div>
+						{% if form_reviewNews.name_RN.errors %}
+							{{ form_reviewNews.name_RN.errors }}
+						{% endif %}
+
+
+						{% if form_reviewNews.editor_RN.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-rn-editor">
+							<label class="class-rn-editor-label" for="class-rn-editor-input">Editor</label>
+							{{ form_reviewNews.editor_RN }}
+						</div>
+						{% if form_reviewNews.editor_RN.errors %}
+							{{ form_reviewNews.editor_RN.errors }}
+						{% endif %}
+
+
+						<div class="class-rn-pages">
+							<span class="class-rn-pages-label">Pages :</span>
+							<input type="number" id="class-rn-pages-input-start" class="class-textfield" min="0">
+							<span>-</span>
+							<input type="number" id="class-rn-pages-input-end" class="class-textfield" min="0">
+
+							{{ form_reviewNews.pages }}
+						</div>
+						{% if form_reviewNews.pages.errors %}
+							{{ form_reviewNews.pages.errors }}
+						{% endif %}
+
+
+						{% if form_reviewNews.type_RN.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-rn-type">
+							<span class="class-rn-type-label">Type :</span>
+							<span class="class-rn-type-container">
+								{% for radio in form_reviewNews.type_RN %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_reviewNews.type_RN.errors %}
+							{{ form_reviewNews.type_RN.errors }}
+						{% endif %}
+
+						
+						<div class="class-rn-audience">
+							<span class="class-rn-audience-label">Audience :</span>
+							<span class="class-rn-audience-container">
+								{% for radio in form_reviewNews.audience_RN %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_reviewNews.audience_RN.errors %}
+							{{ form_reviewNews.audience_RN.errors }}
+						{% endif %}
+
+
+						{% if form_reviewNews.reading_committee_RN.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-rn-read">
+							<span class="class-rn-read-label">Reading committee :</span>
+							<span class="class-rn-read-container">
+								{% for radio in form_reviewNews.reading_committee_RN %}
+									{{ radio }}
+								{% endfor %}
+							</span>
+						</div>
+						{% if form_reviewNews.reading_committee_RN.errors %}
+							{{ form_reviewNews.reading_committee_RN.errors }}
+						{% endif %}
+					</div>
+
+
+
+					<div class="class-form-report class-off">
+
+						{% if form_report.type_RP.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-report-type">
+							<label class="class-report-type-label" for="class-report-type-input">Report type</label>
+							{{ form_report.type_RP }}
+						</div>
+						{% if form_report.type_RP.errors %}
+							{{ form_report.type_RP.errors }}
+						{% endif %}
+
+
+						{% if form_report.num_report.errors %}
+							<span class="class-error-ancre" style="display: none;"></span>
+						{% endif %}
+						<div class="class-report-num">
+							<label class="class-report-num-label">Report number</label>
+							{{ form_report.num_report }}
+						</div>
+						{% if form_report.num_report.errors %}
+							{{ form_report.num_report.errors }}
+						{% endif %}
+
+					</div>
+
+
+					{% if form_tag_errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-bbtab class-form-tags">
+						<label class="class-bbtab-label class-tags-label" for="class-tags-input">Tags</label>
+						<span class="class-bbtab-error class-tags-error" style="display: none;"></span>
+						<div class="class-bbtab-container class-tags-container class-textfield">
+							<div class="class-bbtab-input class-tags-input">
+								<input class="class-bbtab-input-field" id="class-tags-input-field" type="text">
+								<i class="class-bbtab-input-icon class-tags-input-icon fas fa-plus"></i>
+							</div>
+							<div class="class-bbtab-bubbles class-tags-bubbles"></div> 
+						</div>
+
+						<div class="class-bbtab-bubbles-cross class-tags-bubbles-cross class-off">
+							<i class="fas fa-plus fa-fw"></i>
+						</div>
+						{{ form_tag.tags }}
+					</div>
+					{% if form_tag_errors %}
+						{{ form_tag_errors }}
+					{% endif %}
+
+
+					{% if form.summary.errors %}
+						<span class="class-error-ancre" style="display: none;"></span>
+					{% endif %}
+					<div class="class-form-summary">
+						<label for="class-summary-textarea" class="class-summary-label">Summary</label>
+						{{ form.summary }}
+					</div>
+					{% if form.summary.errors %}
+						{{ form.summary.errors }}
+					{% endif %}
+					
+					<div class="class-form-publish">
+						<input class="class-publish-submit class-blue-btn" type="submit" value="PUBLISH">
+					</div>
+				</form>
+			<script src='{% static "scripts_js/ajout_article.js" %}'></script>
+			</main>
+		</div>
+	{% endblock %}

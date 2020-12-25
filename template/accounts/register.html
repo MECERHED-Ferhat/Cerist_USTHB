@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href='{% static "assets/icon.png" %}' />
+    {% block page_title %}
+    <title>Register</title>
+    {% endblock %}
+    <!--  aos plugin for animations -->
+    <link rel="stylesheet" href="{% static 'feuilles_css/aos.css' %}">
+    <!--  stylesheet -->
+    <link rel="stylesheet" href=" {%  static 'feuilles_css/feuille2.css' %}">
+</head>
+    <body>
+        
+        <div class="main-container" data-aos="fade-right">
+            {% block formImg %}
+            <aside class="register-img-container">
+            </aside>
+            {% endblock %}
+        
+            <main class="form-container">
+                <div class="form-content" data-aos="zoom-in-up" data-aos-delay="200">
+                    
+                    {% block formContent %}
+
+                    <div class="form-header" >   
+                        <h1>Create an account</h1>
+                    </div>
+                
+                    <div  class="form-body">
+                        
+                        <form action="" method="POST">
+                            {% csrf_token %}
+
+                            {% for message in messages%}
+                            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</p>
+                             {% endfor %}
+                                                      
+                            <label for="id_first_name">{{form.first_name.label}}</label><br>
+                            {% if form.first_name.errors %}
+						        <span class="class-error-ancre" style="display: none;"></span>
+					        {% endif %}
+                            {{form.first_name}} <br>
+                            {{form.first_name.errors}}
+
+                            <label for="id_last_name">{{form.last_name.label}}</label><br>
+                            {% if form.last_name.errors %}
+						        <span class="class-error-ancre" style="display: none;"></span>
+					        {% endif %}
+                            {{form.last_name}} <br>
+                            {{form.last_name.errors}}
+
+                            <label for="id_password1">{{form.password1.label}}</label><br>
+                            {% if form.password1.errors %}
+						        <span class="class-error-ancre" style="display: none;"></span>
+					        {% endif %}
+                            {{form.password1}} <br>
+                            {{form.password1.errors}}
+
+                            <label for="id_password2">{{form.password2.label}}</label><br>
+                            {% if form.password2.errors %}
+						        <span class="class-error-ancre" style="display: none;"></span>
+					        {% endif %}
+                            {{form.password2}} <br>
+                            {{form.password2.errors}}
+
+                            <label for="id_email">{{form.email.label}}</label><br>
+                            {% if form.email.errors %}
+						        <span class="class-error-ancre" style="display: none;"></span>
+					        {% endif %}
+                            {{form.email}} <br>
+                            {{form.email.errors}}
+            
+
+                            <input type="submit" value="Sign Up">
+
+                            
+                        </form> 
+                    </div>
+                    
+                    {% endblock %}
+                    <div class="form-footer"> 
+                        <a href="{% url 'home:index' %}"><img class="back-arrow" src="{% static 'assets/Forms-return-arrow.png'%}" alt=""> </a>
+                    </div>  
+                </div>
+            </main>
+        </div>
+       
+    <!-- JQuery -->
+    <script src='{% static "jquery/jquery-3.4.1.js" %}'></script>
+    <!-- aos -->
+    <script src='{% static "jquery/aos.js" %}'></script>
+    <!-- to enable aos -->
+    <script src='{% static "scripts_js/aos_init.js" %}'></script>
+   
+   
+    </body>
+</html>

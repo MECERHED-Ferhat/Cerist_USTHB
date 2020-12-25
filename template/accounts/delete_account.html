@@ -1,0 +1,34 @@
+{% extends "accounts/basic_information.html" %}
+{% load static %} <!-- must be here or error -->
+{% block page_title %}
+<title>Delete Account</title>
+{% endblock %}
+
+{% block content %}
+
+<aside class="setting-types" data-aos="fade-right">
+    <a href='{% url "account:basicInformation" %}' class="option"><span>Basic information</span> </a>
+    <a href='{% url "account:changePassword" %}' class="option"><span>Reset password</span> </a>
+    <a href='{% url "account:deleteAccount" %}' class="option" id="viewed"><span>Delete account</span> </a>
+
+</aside>
+
+<main class="delete-account">
+        
+    <div class="delete">
+        <p class="warning">You can delete your account at any time. However, this action is irreversible.</p>           
+        <button class="alert">Delete my account</button>
+    </div>
+
+    <span class="confirm-deletion">
+        <p class="warning">Are you sure you want to delete your account ?</p>
+            
+        <form class="confirm-deletion-form" action="" method="POST">
+            {% csrf_token %}
+            <button class="confirm-deletion-btn" type="submit">Yes</button>
+            <button class="cancel-deletion" type="button">No</button>   
+        </form>
+    </span>
+</main>
+<script src='{% static "scripts_js/delete-account.js" %}'></script>
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html> 
+{% load static %}
+{% load timestamp %}
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	{% block other_meta %} 
+	<meta name="description" content="CERIST digital humanities departement digital library">
+	{% endblock %}
+	<link rel="shortcut icon" href='{% static "assets/icon.png" %}' />
+
+	{% block page_title %}
+	<title>CERIST Degital Humanities DL</title>
+	{% endblock %}
+	
+	<!-- Feuilles CSS -->
+	{% block feuilleCss %} <!-- if you want to change this logic just overried this block like
+	I did in ajout-article.html else this default logic will be used-->
+	{% if request.user.is_authenticated %}
+		<link rel="stylesheet" href='{% static "feuilles_css/feuille3.css" %}'>	
+	{% else %}
+		<link rel="stylesheet" href='{% static "feuilles_css/feuille.css" %}'>
+	{% endif %}
+	{% endblock %}
+	
+	<!-- Bibliothèque d'icônes -->
+	<link rel="stylesheet" href='{% static "fontawesome/css/all.css" %}'>
+	<!-- JQuery -->
+	<script src='{% static "jquery/jquery-3.4.1.js" %}'></script>
+	<!-- Plugin -->
+		<!-- NICE_SELECT --> 
+	<link rel="stylesheet" href='{% static "nice_select/css/nice-select.css" %}'>
+	<script src='{% static "nice_select/js/jquery.nice-select.js" %}'></script>
+		
+		<!-- SLICK -->
+	<link rel="stylesheet" href='{% static "slick/slick-1.8.1/slick/slick.css" %}'>
+	<link rel="stylesheet" href='{% static "slick/slick-1.8.1/slick/slick-theme.css" %}'>
+	<!--  aos plugin for animations -->
+	<link rel="stylesheet" href="{% static 'feuilles_css/aos.css' %}">
+	<script src='{% static "jquery/aos.js" %}'></script>
+</head>
+ 
+<body>
+	
+	{% if request.user.is_authenticated %}
+	{% include "accounts/navbar_log.html" %}
+	{% else %}
+	{% include "navbar.html" %}
+	{% endif %}
+
+
+		{% block main_content %}
+		<div class="class-home-wallpaper">
+			<img src="{% static 'assets/background.jpg' %}" class="class-wallpaper-hidden">
+
+			<img src="{% static 'assets/background.jpg' %}" draggable='false' class="class-wallpaper-main">
+			<h1 class="class-wallpaper-welcome unselectable">WELCOME TO CERIST DIGITAL HUMANITIES LIBRARY</h1>
+		</div>
+		
+		<div class="class-home-lastadd">
+			<p class="class-lastadd-title">LAST ADDED</p>
+		</div>
+		
+		<div class="class-home-carousel">
+			<div class="class-carousel-lastadd">
+				<span>LAST ADDED</span>
+			</div>
+			<div class="class-carousel-box" data-aos="zoom-in">
+				<div class="class-slick">
+					{% for card in cards %}
+					<div class="class-carousel-slide">
+						<div class="class-slide-card" data-href='{% url "article:read" card.id %}' onclick="click_card(this)">
+							<div class="class-card-time">
+								<i class="class-card-time-icon fas fa-clock"></i>
+								<span>
+									{% if card.date.days > 1 %}
+										{{ card.date.days }} days ago
+									{% elif card.date.days == 1 %}
+										Yesterday
+									{% else %}
+										Today
+									{% endif %}
+								</span>
+							</div>
+
+							<div class="class-card-title hyphenate">{{ card.title }}</div>
+
+							<div class="class-card-summary hyphenate">
+								<div class="class-card-summary-text">Summary :</div>
+								{{ card.summary }}
+							</div>
+
+							<ul class="class-card-author">
+								<li class="class-card-author-li">
+									<div class="class-card-author-pic">
+										{% if not card.pic %}
+										<img class="class-card-author-img" src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+										{% else %}
+										<img class="class-card-author-img" src="{{ card.pic }}?{% current_time %}" draggable="false">
+										{% endif %}
+									</div>
+									{{ card.postmaster }}
+								</li>
+							</ul>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{% endblock %}
+	<footer>
+		<div class="class-footer-brand">
+			<h3>&#169; CERIST DIGITAL HUMANITIES ALL RIGHT RESERVED</h3>
+		</div>
+	</footer>
+	
+	<!-- Initialization -->
+	<script src='{% static "slick/slick-1.8.1/slick/slick.js" %}'></script>
+	<script src='{% static "scripts_js/init.js" %}'></script>
+	<script src='{% static "scripts_js/aos_init.js" %}'></script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<div class="class-sidebar">
+	<aside class="class-aside-sidebar">
+		<a class="class-sidebar-elt" href="{% url 'home:index' %}">
+			<i class="class-sidebar-icon fas fa-home fa-fw"></i>
+			<span class="class-sidebar-text">Home</span>
+		</a>
+		<a class="class-sidebar-elt" href="{% url 'account:profile' request.user.account.id request.user.last_name request.user.first_name %}">
+			<i class="class-sidebar-icon fas fa-user fa-fw"></i>
+			<span class="class-sidebar-text">Account</span>
+		</a>
+		<a class="class-sidebar-elt" href="{% url 'article:addArticle' %}">
+			<i class="class-sidebar-icon fas fa-plus fa-fw"></i>
+			<span class="class-sidebar-text">Add Article</span>
+		</a>
+		<a class="class-sidebar-elt" href="{% url 'account:notifications' %}">
+			<i class="class-sidebar-icon fas fa-bell fa-fw">
+				{% include "accounts/new_notif_icon.html" %}
+			</i>
+			<span class="class-sidebar-text">Notifications</span>
+		</a>
+		<a class="class-sidebar-elt" href="{% url 'account:basicInformation' %}">
+			<i class="class-sidebar-icon fas fa-cog fa-fw"></i>
+			<span class="class-sidebar-text">Settings</span>
+		</a>
+		{% if request.user.is_staff %}
+		<a class="class-sidebar-elt" href="{% url 'admin:index' %}">
+			<i class="class-sidebar-icon fas fa-users-cog"></i>
+			<span class="class-sidebar-text">Admin</span>
+		</a>
+		{% endif %}
+
+		<a class="class-sidebar-elt" href="{% url 'home:logout' %}">
+			<i class="class-sidebar-icon fas fa-sign-out-alt fa-fw"></i>
+			<span class="class-sidebar-text">Log Out</span>
+		</a>
+	</aside>
+</div>

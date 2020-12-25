@@ -1,0 +1,53 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% load timestamp %}
+
+{% block log_content %}
+	<div class="class-navbar-log">
+		{% if not request.user.account.profile_pic %}
+		<img class="class-log-img" src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+		{% else %}
+		<img class="class-log-img" src="{{request.user.account.profile_pic.url}}?{% current_time %}" draggable="false">
+		{% endif %}
+	</div>
+	<div class="class-log-menu-container">
+		<div class="class-log-menu">
+			<span class="class-log-menu-user">{{request.user.last_name}} {{request.user.first_name}}</span>
+			<hr class="class-log-menu-hr">
+			<a class="class-log-menu-elt" href="{% url 'home:index' %}">
+				<i class="class-log-menu-icon fas fa-home fa-fw"></i>
+				<span class="class-log-menu-text">Home</span>
+			</a>
+			<a class="class-log-menu-elt" href="{% url 'account:profile' request.user.account.id request.user.last_name request.user.first_name %}">
+				<i class="class-log-menu-icon fas fa-user fa-fw"></i>
+				<span class="class-log-menu-text">Account</span>
+			</a>
+			<a class="class-log-menu-elt" href="{% url 'article:addArticle' %}">
+				<i class="class-log-menu-icon fas fa-plus fa-fw"></i>
+				<span class="class-log-menu-text">Add Article</span>
+			</a>
+			<a class="class-log-menu-elt" href="{% url 'account:notifications' %}">
+				<i class="class-log-menu-icon fas fa-bell fa-fw">
+					{% include "accounts/new_notif_icon.html" %}
+				</i>
+				<span class="class-log-menu-text">Notifications</span>
+			</a>
+			<a class="class-log-menu-elt" href="{% url 'account:basicInformation' %}">
+				<i class="class-log-menu-icon fas fa-cog fa-fw"></i>
+				<span class="class-log-menu-text">Settings</span>
+			</a>
+			{% if request.user.is_staff %}
+			<a class="class-log-menu-elt" href="{% url 'admin:index' %}">
+				<i class="class-log-menu-icon fas fa-users-cog"></i> 
+				<span class="class-log-menu-text">Admin</span>
+			</a>
+			{% endif %}
+			<a class="class-log-menu-elt" href="{% url 'home:logout' %}">
+				<i class="class-log-menu-icon fas fa-sign-out-alt fa-fw"></i>
+				<span class="class-log-menu-text">Log Out</span>
+			</a>
+			
+		</div>
+	</div>
+	
+{% endblock %}

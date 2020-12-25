@@ -1,0 +1,118 @@
+{% extends "index.html" %}
+{% load static %}
+{% load timestamp %}
+
+{% block page_title %}
+<title>Basic Information</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.css">
+{% endblock %}
+    
+   
+    {% block main_content %}
+    
+    <div class="main-container">  
+       
+        <aside class="side-bar" >{% include "accounts/sidebar_log.html" %}</aside>
+      
+        {% block content %}
+        <aside class="setting-types" data-aos="fade-right">
+               <a href='{% url "account:basicInformation" %}' class="option" id="viewed"><span>Basic information</span></a>
+               <a href='{% url "account:changePassword" %}' class="option"><span>Reset password</span> </a>
+               <a href='{% url "account:deleteAccount" %}' class="option"><span>Delete account</span> </a>
+        </aside>
+
+        <main class="profile-info">
+                
+              
+                <div class="profile-info-child">
+
+                        <div class="profile-photo-container">
+                            {% if not request.user.account.profile_pic %}
+                            <img src="{% static 'assets/default_profile_pic.png' %}" draggable="false">
+                            {% else %}
+                            <img src="{{ request.user.account.profile_pic.url }}?{% current_time %}" draggable="false">
+                            {% endif %}
+                        </div>
+                        
+                        <form action="" method="POST" enctype="multipart/form-data">
+                                <label class="class-profile-pic-label" for="id_profile_pic">Upload profile picture</label>
+                                {{moreInfoForm.profile_pic}}
+                
+                              
+                                <br><br>
+
+                                 {% csrf_token %}
+
+                                 {% for message in messages%}
+                                 <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</p>
+                                 {% endfor %}
+                                
+                                
+                                {% if userForm.username.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{userForm.username}} <br>
+                                {{userForm.username.errors}}
+                               
+                              
+                                <label for="id_first_name">{{userForm.first_name.label}}</label>
+                                {% if userForm.first_name.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{userForm.first_name}} <br>
+                                {{userForm.first_name.errors}}
+
+                                <label for="id_last_name">{{userForm.last_name.label}}</label>
+                                {% if userForm.last_name.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{userForm.last_name}} <br>
+                                {{userForm.last_name.errors}}
+                               
+                                <label for="id_email">{{userForm.email.label}}</label>
+                                {% if userForm.email.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{userForm.email}} <br>
+                                {{userForm.email.errors}}
+
+                                <label for="id_googleScholar">{{moreInfoForm.google_scholar.label}}</label>
+                                {% if moreInfoForm.google_scholar.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{moreInfoForm.google_scholar}} <br>
+                                {{moreInfoForm.google_scholar.errors}}
+
+                              
+                                <label for="id_github">{{moreInfoForm.github.label}}</label>
+                                {% if moreInfoForm.github.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{moreInfoForm.github}} <br>
+                                {{moreInfoForm.github.errors}}
+
+                                <label for="id_linkdin">{{moreInfoForm.linkedin.label}}</label>
+                                {% if moreInfoForm.linkedin.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{moreInfoForm.linkedin}} <br>
+                                {{moreInfoForm.linkedin.errors}}
+                              
+                                <label for="id_website">{{moreInfoForm.website.label}}</label>
+                                {% if moreInfoForm.website.errors %}
+				        <span class="class-error-ancre" style="display: none;"></span>
+				{% endif %}
+                                {{moreInfoForm.website}} <br>
+                                {{moreInfoForm.website.errors}}                                                                          
+                                
+                              
+                                <input  type="submit" value="Update my account"><br><br>
+                        </form>
+                </div>
+        </main>
+        <script type="text/javascript" src="{% static 'scripts_js/profile_pic.js' %}"></script>
+        {% endblock %}  
+    </div>
+{% endblock %}
+
+    

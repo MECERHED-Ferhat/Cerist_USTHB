@@ -1,0 +1,41 @@
+{% load static %}
+<header class="class-header-navbar">
+	
+		<a class="class-brand-sm" href='{% url "home:index" %}'>DH DL</a> 
+		<div class="class-brand">
+			<a class="class-brand-a" href='{% url "home:index" %}'>DIGITAL HUMANITIES DL</a>
+		</div>
+	
+	<div class="class-search-container">
+	<form class="class-search-form" method="GET" action='{% url "home:search" 1 %}' onsubmit="return validateSearchBar()">
+	
+		<input class="class-search-bar" type="text" name="search-bar" placeholder="Search...">
+		<button class="class-search-btn class-blue-btn" type="submit">
+			<i class="fas fa-search"></i>
+		</button>
+	</form>
+	</div>
+	
+	<div class="class-header-auth">
+	{% block log_content %}
+		<div class="class-auth-btn">
+		 	<a href="{% url 'home:register' %}"><button class="class-auth-reg"><strong>Register</strong></button></a>	
+			<a href="{% url 'home:login' %}"><button class="class-auth-log"><strong>Login</strong></button></a>	
+		</div>
+		
+			<button class="class-collapse-btn class-green-btn">
+				<i class="fas fa-bars fa-fw"></i>
+			</button>
+		
+		<div class="toggle-menu">
+			<div class="class-collapse-content">
+				<a class="class-collapse-reg class-green-btn " href="{% url 'home:register' %}">Register</a>
+				<a class="class-collapse-log class-blue-btn-nav" href="{% url 'home:login' %}">Login</a>
+			</div>
+		</div>
+		
+	{% endblock %}
+	</div>
+
+</header>
+<script src='{% static "scripts_js/search_bar.js" %}'></script>

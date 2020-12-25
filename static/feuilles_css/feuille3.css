@@ -1,0 +1,581 @@
+/* add feuille.css */
+@import url('./feuille.css');
+
+/* add or override */
+html,body{
+    box-sizing: border-box;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body{
+    background-color: var(--color-bg);
+}
+
+/* Errors  */
+
+span.class-error-ancre + input
+{
+    border: 1px solid var(--color-type-3) !important; 
+}
+
+span.class-error-ancre + input:focus
+{
+    border: 1.5px solid var(--color-type-3)  !important; 
+}
+
+ul.errorlist{
+	margin: 0;
+	color: rgba(200,0,0,1);
+	font-size: 1rem;
+}
+
+ul.errorlist li{
+	margin-left: 0;	
+}
+
+
+/*---------------------------*/
+
+/* alerts   */
+
+.main-container p{
+font-size: 18px;
+padding: 10px 10px 10px 10px;
+border-radius: 10px;
+}
+.main-container p.info{
+    background-color: var(--color-background-info);
+    color : var(--color-font-info);
+    border: 1px solid var(--color-border-info) ;
+
+}
+
+.main-container p.error{
+   
+    background-color: var(--color-background-error) !important;
+    color : var(--color-font-error) !important;
+    border: 1px solid var(--color-border-error) !important;
+}
+
+.main-container p.success{
+  
+    background-color: var(--color-background-success) !important;
+    color : var(--color-font-success) !important;
+    border: 1px solid var(--color-border-success) !important;
+}
+
+.main-container p.warning{
+
+    background-color: var(--color-background-warning) !important;
+    color : var(--color-font-warning) !important;
+    border: 1px solid var(--color-border-warning) !important;
+}
+
+.main-container ul.warning{
+    font-size: 18px;
+    padding: 10px 10px 10px 0px;
+    border-radius: 10px;
+    background-color: var(--color-background-warning);
+    color : var(--color-font-warning);
+    border: 1px solid var(--color-border-warning) ;
+    
+
+}
+
+.main-container li{
+    margin-left: 25px;
+
+}
+
+/* ---------------------- */
+
+/*   Basic information */
+.main-container{
+    display: grid;
+    grid-template-columns: 50px minmax(160px,200px) 1fr;
+    min-height: 100vh;
+    
+}
+
+.class-sidebar{ 
+	
+    height: 100%;
+   
+}
+
+.side-bar{
+    z-index: 2;
+}
+
+.class-sidebar-text{display: none;} /* override */
+
+.main-container label{
+    display: block;
+    margin-top: 15px;
+    font-family: var(--poppins);
+}
+
+.main-container .setting-types{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.main-container .setting-types .option{
+    width: 80%;
+    margin: 1rem 0;
+    padding: .8rem 0;
+    box-sizing: border-box;
+    border-radius: 7px;
+
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    background-color: var(--color-green);
+}
+
+.main-container .setting-types .option:hover{
+    background-color : var(--color-green-dark);
+    
+}
+
+.main-container .setting-types #viewed
+{   
+    background-color : var(--color-blue);
+    
+}
+
+.main-container .profile-info{
+    padding-bottom: 150px;
+
+    border-right: var(--border);
+    border-left: var(--border);
+}
+
+.main-container .profile-info .profile-info-child {
+    margin: 0 5%;
+    width: 90%;
+    max-width: 400px;
+}
+
+.main-container .profile-info .profile-info-child .profile-photo-container{
+    margin: 20px auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+}
+
+.main-container .profile-info .profile-info-child .profile-photo-container img{
+    display: block;
+    width: 100%;
+    height: auto;
+  
+    
+}
+
+.main-container .profile-info .profile-info-child  .profile-photo-container:hover button.class-photo-crop{
+    opacity: .95;
+    transition: .3s ease;
+}
+
+button.class-photo-crop{
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-green);
+    font-size: 16px;
+    font-weight: var(--semi-bold);
+    font-family: var(--poppins);
+    padding: 5px 8px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    opacity: 0; 
+    border:none;
+    border-radius: 50%;
+}
+
+.main-container input{
+    width:  100%;
+    border: 1px solid var(--color-green-dark);
+    border-radius: 6px;
+    height: 40px;
+    font-size: 18px;
+    font-family: var(--poppins);
+    margin-bottom: 8px;
+    padding-left: 5px;
+    box-sizing: border-box;
+}
+
+.main-container input:focus{
+    border: 1.5px solid var(--color-green-dark);
+}
+
+.main-container input[type = "submit"]{
+    display: block;
+    width: initial;
+    height: auto;
+    margin: auto;
+    margin-top: 40px;
+    padding: .5rem .8rem;
+    font-size: 1.2rem;
+
+    border: none;
+    cursor: pointer;
+    color: var(--color-white);
+    background-color: var(--color-blue);
+}
+.main-container input[type = "submit"]:hover{
+    background-color: var(--color-darkBlue);
+}
+
+.main-container .profile-info .profile-info-child input[type = "file"]{
+    height: initial;
+    border: none;
+    color: transparent;
+}
+
+label.class-profile-pic-label{
+    margin: auto;
+    width: 175px;
+    height: 24px;
+    padding: 7px 10px;
+    cursor: pointer;
+    color: white;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    background-color: var(--color-green);
+    border-radius: 5px;
+}
+label.class-profile-pic-label:hover{
+    background-color: var(--color-green-dark);
+}
+
+.main-container .profile-info .profile-info-child input[type = "file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.main-container .profile-info .profile-info-child input[type = "file"]:hover::before
+{
+    border-color: var(--color-green-dark);
+    background-color: var(--color-white);
+  }
+
+.main-container .profile-info .profile-info-child input[type = "file"]:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+
+.hidden
+{
+    display: none;
+}
+
+/* -----------------------  */
+
+/* change password */
+
+.main-container .change-password{
+    display: grid;
+    grid-template-columns: 50px minmax(250px,6fr) minmax(20px,4fr);
+    padding-bottom: 150px;
+
+    border-left: var(--border);
+    border-right: var(--border);
+}
+
+.main-container .change-password input[type = "submit"]{
+    margin-bottom: 20px;
+}
+
+.main-container .change-password .change-password-child {
+    grid-column: 2 / span 1;
+}
+
+
+
+/* ----------------------- */
+
+
+/* delete account */
+
+.main-container .delete-account
+{
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   align-items: center;
+ 
+    border-left: var(--border);
+    border-right: var(--border);
+}
+
+.main-container .delete-account .delete,
+.main-container .delete-account .confirm-deletion 
+{   
+    text-align: center;
+   
+}
+
+form.confirm-deletion-form{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+form.confirm-deletion-form .confirm-deletion-btn,
+form.confirm-deletion-form .cancel-deletion,
+.delete .alert{
+    width: 30%;
+    margin: 0;
+    padding: .7rem 0;
+    cursor: pointer;
+
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 7px;
+}
+form.confirm-deletion-form .confirm-deletion-btn,
+.delete .alert{
+    background-color: red;
+}
+form.confirm-deletion-form .cancel-deletion{
+    background-color: var(--color-blue);
+}
+.main-container .delete-account button:hover{
+    background-color: var(--color-red-dark);
+}
+form.confirm-deletion-form .cancel-deletion:hover{
+    background-color: var(--color-darkBlue)
+}
+.main-container .delete-account .confirm-deletion
+{
+    display: none;
+}
+
+
+/* ----------------------- */
+
+
+/*  account */
+
+.main-container .account-info{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    background-color: white;
+    padding-top: 20px;
+}
+.class-info-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+.class-name-photo-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.class-name-photo-container .user-full-name{
+    text-align: center;
+}
+
+.main-container .account-info .profile-photo-container{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: white;
+}
+
+.main-container .account-info .profile-photo-container img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.main-container .account-info .media-links{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    width: 80%;
+}
+
+.main-container .account-info .media-links a{
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 25px;
+    margin: 3px;
+    padding: 3px 0;
+
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--color-white);
+
+    border-radius: 6px;  
+}
+.main-container .account-info .media-links a i{
+    font-size: 1.2rem;
+    margin: 0 3px;
+}
+
+.main-container .account-info .media-links a#inactive{
+    background-color: gray;
+    cursor: default;
+}
+
+.main-container .account-info .media-links a#google-scholar{
+    background-color: #4285F4;
+}
+
+.main-container .account-info .media-links a#github{
+    background-color: #3E2C00;
+}
+
+.main-container .account-info .media-links a#linkedin{
+    background-color: #2867B2;
+}
+
+.main-container .account-info .media-links a#website{
+    background-color: #34A843;
+}
+
+hr.class-accinfo-hr{
+    display: none;
+    width: 80%;
+}
+
+button.class-follow-btn{
+    cursor: pointer;
+    width: 120px;
+    border: 2px solid var(--color-blue);
+    margin: 2rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    border-radius: 9px;
+    transition: background-color .3s;
+}
+button.class-follow-nfw,
+button.class-follow-fw:hover{
+    background-color: white;
+    color: var(--color-blue);
+}
+button.class-follow-fw,
+button.class-follow-nfw:hover{
+    background-color: var(--color-blue);
+    color: white;
+}
+button.class-followers-btn{
+    border: none !important;
+    background-color: var(--color-blue);
+    color: white;
+}
+button.class-followers-btn:hover{
+    background-color: #0EA5D8;
+}
+/*-----------*/
+
+
+    
+@media only screen and (max-width: 620px) {
+    button.class-follow-btn{
+        width: 200px !important;
+    }
+
+    .main-container{
+        grid-template-columns: 50px 1fr;
+    }
+    .delete-account{
+        border: none !important;
+    }
+    .main-container .setting-types{
+        flex-direction: row;
+        height: min-content;
+
+        border: none !important;
+    }
+    .main-container .setting-types .option{
+        flex: 1;
+        width: 100% !important;
+        margin: 0;
+        border-radius: 0;
+    }
+    .main-container .change-password{
+        border: none !important;
+    }
+    .profile-info{
+        border: none !important;
+    }
+    .main-container .profile-info,.main-container .change-password,.main-container .delete-account{
+        grid-column: 2 / span 1;
+        grid-template-columns: 20px minmax(20px,1fr) 20px;  
+    }
+    .main-container .side-bar{
+        grid-row: 1 / span 2;
+    }
+    .main-container .account-info{
+        background-color: transparent;
+    }
+    .class-name-photo-container{
+        margin-right: 1rem;
+    }
+    .class-info-container{
+        flex-direction: row;
+        align-items: flex-start !important;
+    }
+    .media-links{
+        width: auto !important;
+        flex-direction: column !important;
+    }
+    .media-links a{
+        width: auto !important;
+    }
+    .media-links a span{
+        display: none;
+    }
+    main.class-main-accArt{
+        border: none !important;
+        border-right: var(--border) !important;
+    }
+    aside.account-info{
+        border: none !important;
+        border-right: var(--border) !important;
+    }
+    .class-follow-btn{
+        margin: 0 !important;
+    }
+    hr.class-accinfo-hr{
+        display: block !important;
+    }
+
+    @media only screen and (max-width: 480px) {
+        .main-container .setting-types{
+            flex-direction: column;
+        }
+    }
+    @media only screen and (max-width: 400px) {
+        .main-container input[type = "submit"]{
+            font-size: 16px;
+        }
+    }
+    
+
+}

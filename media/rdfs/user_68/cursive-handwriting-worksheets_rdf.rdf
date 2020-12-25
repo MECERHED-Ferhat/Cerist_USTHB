@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:si="http://127.0.0.1:8000/"
+>
+  <rdf:Description rdf:about="http://127.0.0.1:8000/article/read/67/">
+    <si:name_RN>NewsReview name</si:name_RN>
+    <si:editor_RN>NewsReview editor</si:editor_RN>
+    <si:reading_committee_RN>Yes</si:reading_committee_RN>
+    <si:document rdf:resource="http://127.0.0.1:8000/media/articles/2020/12/18/cursive-handwriting-worksheets.pdf"/>
+    <si:doctype>Review or Newspaper Article</si:doctype>
+    <si:summary>Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte Texte</si:summary>
+    <si:authors>
+      <rdf:Bag rdf:nodeID="N4400972a9e794474932e10df6265cca0">
+        <rdf:li>Mecerhed Ferhat</rdf:li>
+      </rdf:Bag>
+    </si:authors>
+    <si:tags>
+      <rdf:Bag rdf:nodeID="N2cf672240e754f5eba0bd8fcd8749291">
+        <rdf:li>Tag 1</rdf:li>
+        <rdf:li>Tag 3</rdf:li>
+        <rdf:li>Tag 2</rdf:li>
+      </rdf:Bag>
+    </si:tags>
+    <si:pages>pp 1-20</si:pages>
+    <si:title>How to make a card</si:title>
+    <si:type_RN>Article Review</si:type_RN>
+    <si:date_creation rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2020-12-18</si:date_creation>
+    <si:audience_RN>National</si:audience_RN>
+    <si:id rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">67</si:id>
+  </rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,22 @@
+{% extends "accounts/register.html "%}
+
+{% block page_title %}
+<title>Register</title>
+{% endblock %}
+
+{% block formContent %}
+
+<div class="form-header" >   
+    <h1>Creat an account</h1>
+</div>
+
+<div class="corrected-position">
+    {% for message in messages%}
+    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</p>
+     {% endfor %}
+
+     <form action="{% url 'home:login' %}">
+        <input type="submit" value="Login">
+    </form>
+</div>
+{% endblock %}
